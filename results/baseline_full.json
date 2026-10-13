@@ -1,0 +1,132 @@
+{
+  "model": "TF-IDF + Random Forest",
+  "setting": "full",
+  "n_train": 37130,
+  "n_val": 7956,
+  "n_test": 7957,
+  "train_seconds": 39.8,
+  "val": {
+    "accuracy": 0.7169431875314228,
+    "macro_f1": 0.6319793576188965,
+    "weighted_f1": 0.7018358608619749,
+    "report": {
+      "Anxiety": {
+        "precision": 0.8155737704918032,
+        "recall": 0.6826758147512865,
+        "f1-score": 0.7432306255835668,
+        "support": 583.0
+      },
+      "Bipolar": {
+        "precision": 0.92578125,
+        "recall": 0.5486111111111112,
+        "f1-score": 0.688953488372093,
+        "support": 432.0
+      },
+      "Depression": {
+        "precision": 0.6,
+        "recall": 0.8038961038961039,
+        "f1-score": 0.6871415356151711,
+        "support": 2310.0
+      },
+      "Normal": {
+        "precision": 0.8038327526132404,
+        "recall": 0.9408646003262643,
+        "f1-score": 0.8669673055242391,
+        "support": 2452.0
+      },
+      "Personality disorder": {
+        "precision": 1.0,
+        "recall": 0.29444444444444445,
+        "f1-score": 0.45493562231759654,
+        "support": 180.0
+      },
+      "Stress": {
+        "precision": 0.889763779527559,
+        "recall": 0.2817955112219451,
+        "f1-score": 0.42803030303030304,
+        "support": 401.0
+      },
+      "Suicidal": {
+        "precision": 0.6925960637300843,
+        "recall": 0.46245306633291616,
+        "f1-score": 0.5545966228893058,
+        "support": 1598.0
+      },
+      "accuracy": 0.7169431875314228,
+      "macro avg": {
+        "precision": 0.8182210880518125,
+        "recall": 0.573534378869153,
+        "f1-score": 0.6319793576188965,
+        "support": 7956.0
+      },
+      "weighted avg": {
+        "precision": 0.7385594146600819,
+        "recall": 0.7169431875314228,
+        "f1-score": 0.7018358608619749,
+        "support": 7956.0
+      }
+    }
+  },
+  "test": {
+    "accuracy": 0.7094382304888777,
+    "macro_f1": 0.6210416945602596,
+    "weighted_f1": 0.6935815839452306,
+    "report": {
+      "Anxiety": {
+        "precision": 0.8070175438596491,
+        "recall": 0.6301369863013698,
+        "f1-score": 0.7076923076923077,
+        "support": 584.0
+      },
+      "Bipolar": {
+        "precision": 0.9402390438247012,
+        "recall": 0.5475638051044084,
+        "f1-score": 0.6920821114369502,
+        "support": 431.0
+      },
+      "Depression": {
+        "precision": 0.5892514395393474,
+        "recall": 0.7970575508437906,
+        "f1-score": 0.6775795475446018,
+        "support": 2311.0
+      },
+      "Normal": {
+        "precision": 0.7932692307692307,
+        "recall": 0.9417040358744395,
+        "f1-score": 0.8611369990680335,
+        "support": 2453.0
+      },
+      "Personality disorder": {
+        "precision": 1.0,
+        "recall": 0.28888888888888886,
+        "f1-score": 0.4482758620689655,
+        "support": 180.0
+      },
+      "Stress": {
+        "precision": 0.8974358974358975,
+        "recall": 0.2625,
+        "f1-score": 0.40618955512572535,
+        "support": 400.0
+      },
+      "Suicidal": {
+        "precision": 0.7018216682646213,
+        "recall": 0.45807259073842305,
+        "f1-score": 0.5543354789852328,
+        "support": 1598.0
+      },
+      "accuracy": 0.7094382304888777,
+      "macro avg": {
+        "precision": 0.8184335462419211,
+        "recall": 0.5608462653930457,
+        "f1-score": 0.6210416945602596,
+        "support": 7957.0
+      },
+      "weighted avg": {
+        "precision": 0.7345326326776498,
+        "recall": 0.7094382304888777,
+        "f1-score": 0.6935815839452306,
+        "support": 7957.0
+      }
+    }
+  }
+}

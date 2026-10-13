@@ -1,0 +1,210 @@
+{
+  "model": "distilbert-base-uncased",
+  "setting": "full",
+  "epochs": 3,
+  "lr": 2e-05,
+  "max_len": 256,
+  "n_train": 37130,
+  "n_val": 7956,
+  "n_test": 7957,
+  "train_seconds": 432.1,
+  "gpu": "NVIDIA GeForce RTX 4090 Laptop GPU",
+  "val": {
+    "accuracy": 0.830316742081448,
+    "macro_f1": 0.8039675941091085,
+    "weighted_f1": 0.8304912018383259,
+    "report": {
+      "Anxiety": {
+        "precision": 0.890652557319224,
+        "recall": 0.8662092624356775,
+        "f1-score": 0.8782608695652174,
+        "support": 583.0
+      },
+      "Bipolar": {
+        "precision": 0.8567901234567902,
+        "recall": 0.8032407407407407,
+        "f1-score": 0.8291517323775388,
+        "support": 432.0
+      },
+      "Depression": {
+        "precision": 0.7964044943820224,
+        "recall": 0.7670995670995671,
+        "f1-score": 0.7814773980154355,
+        "support": 2310.0
+      },
+      "Normal": {
+        "precision": 0.9472624798711755,
+        "recall": 0.9596247960848288,
+        "f1-score": 0.9534035656401945,
+        "support": 2452.0
+      },
+      "Personality disorder": {
+        "precision": 0.6767676767676768,
+        "recall": 0.7444444444444445,
+        "f1-score": 0.708994708994709,
+        "support": 180.0
+      },
+      "Stress": {
+        "precision": 0.7564102564102564,
+        "recall": 0.7356608478802993,
+        "f1-score": 0.7458912768647282,
+        "support": 401.0
+      },
+      "Suicidal": {
+        "precision": 0.7113218731475993,
+        "recall": 0.7509386733416771,
+        "f1-score": 0.730593607305936,
+        "support": 1598.0
+      },
+      "accuracy": 0.830316742081448,
+      "macro avg": {
+        "precision": 0.8050870659078206,
+        "recall": 0.8038883331467479,
+        "f1-score": 0.8039675941091085,
+        "support": 7956.0
+      },
+      "weighted avg": {
+        "precision": 0.8312715943747604,
+        "recall": 0.830316742081448,
+        "f1-score": 0.8304912018383259,
+        "support": 7956.0
+      }
+    }
+  },
+  "test": {
+    "accuracy": 0.8274475304763101,
+    "macro_f1": 0.7934633542649066,
+    "weighted_f1": 0.8279217480177856,
+    "report": {
+      "Anxiety": {
+        "precision": 0.8878842676311031,
+        "recall": 0.8407534246575342,
+        "f1-score": 0.8636763412489006,
+        "support": 584.0
+      },
+      "Bipolar": {
+        "precision": 0.8497536945812808,
+        "recall": 0.8004640371229699,
+        "f1-score": 0.8243727598566308,
+        "support": 431.0
+      },
+      "Depression": {
+        "precision": 0.8044178554993097,
+        "recall": 0.7563825183903072,
+        "f1-score": 0.7796610169491526,
+        "support": 2311.0
+      },
+      "Normal": {
+        "precision": 0.9500604107933951,
+        "recall": 0.9616795760293518,
+        "f1-score": 0.9558346839546191,
+        "support": 2453.0
+      },
+      "Personality disorder": {
+        "precision": 0.6407766990291263,
+        "recall": 0.7333333333333333,
+        "f1-score": 0.6839378238341969,
+        "support": 180.0
+      },
+      "Stress": {
+        "precision": 0.697841726618705,
+        "recall": 0.7275,
+        "f1-score": 0.7123623011015912,
+        "support": 400.0
+      },
+      "Suicidal": {
+        "precision": 0.7085514834205934,
+        "recall": 0.7622027534418022,
+        "f1-score": 0.7343985529092554,
+        "support": 1598.0
+      },
+      "accuracy": 0.8274475304763101,
+      "macro avg": {
+        "precision": 0.7913265910819305,
+        "recall": 0.7974736632821856,
+        "f1-score": 0.7934633542649066,
+        "support": 7957.0
+      },
+      "weighted avg": {
+        "precision": 0.8295862603211049,
+        "recall": 0.8274475304763101,
+        "f1-score": 0.8279217480177856,
+        "support": 7957.0
+      }
+    }
+  },
+  "labels": [
+    "Anxiety",
+    "Bipolar",
+    "Depression",
+    "Normal",
+    "Personality disorder",
+    "Stress",
+    "Suicidal"
+  ],
+  "confusion_matrix": [
+    [
+      491,
+      18,
+      8,
+      13,
+      21,
+      32,
+      1
+    ],
+    [
+      11,
+      345,
+      25,
+      7,
+      26,
+      15,
+      2
+    ],
+    [
+      3,
+      23,
+      1748,
+      39,
+      5,
+      13,
+      480
+    ],
+    [
+      12,
+      3,
+      12,
+      2359,
+      3,
+      51,
+      13
+    ],
+    [
+      8,
+      4,
+      15,
+      6,
+      132,
+      14,
+      1
+    ],
+    [
+      26,
+      11,
+      12,
+      37,
+      19,
+      291,
+      4
+    ],
+    [
+      2,
+      2,
+      353,
+      22,
+      0,
+      1,
+      1218
+    ]
+  ]
+}
