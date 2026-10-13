@@ -1,46 +1,69 @@
 # Mental Health Text Classifier
 
-An NLP system that analyzes short texts, such as chat messages or social-media posts, for signs of mental-health conditions. It has two parts:
-
-1. **Multi-class classifier.** A machine-learning pipeline trained on about 53,000 labelled statements. It predicts one of 7 categories: *Normal, Depression, Suicidal, Anxiety, Bipolar, Stress, Personality disorder*.
-2. **Risk-assessment web app.** A Flask app that combines a pretrained **Hugging Face** sentiment model with keyword detection to give a low, medium or high risk level and matching recommendations.
+An NLP project that classifies short texts, such as social-media posts and chat messages, into 7 mental-health categories: *Normal, Depression, Suicidal, Anxiety, Bipolar, Stress, Personality disorder*. It compares a classical **TF-IDF + Random Forest** baseline with fine-tuned **transformers (DistilBERT and RoBERTa)**, and includes a **Flask** web app and a desktop app.
 
 > ⚠️ This is an educational project. It is not a diagnostic tool and must not replace professional mental-health advice.
 
+## Results
+
+All models are evaluated on the **same held-out test set** (stratified 70/15/15 split, seed 42). See [`results/RESULTS.md`](results/RESULTS.md) for the full tables.
+
+| Setting | Model | Train size | Test accuracy | Test macro-F1 |
+|---|---|---|---|---|
+| Balanced | TF-IDF + Random Forest | 5,884 | 67.3% | 0.670 |
+| Balanced | DistilBERT (fine-tuned) | 5,884 | 76.0% | 0.759 |
+| Full dataset | TF-IDF + Random Forest | 37,130 | 70.9% | 0.621 |
+| Full dataset | DistilBERT (fine-tuned) | 37,130 | 82.7% | 0.793 |
+| Full dataset | **RoBERTa-base (fine-tuned)** | 37,130 | **85.1%** | **0.822** |
+
+![Model comparison](results/comparison.png)
+
+**Takeaways**
+- Fine-tuned transformers beat the TF-IDF baseline by **+9 to +20 macro-F1 points**. They understand context, such as negation and phrasing, that word-count features miss.
+- On the full, imbalanced dataset the baseline's macro-F1 drops even though its accuracy rises: it favors the large classes. The transformers stay strong on the small classes too.
+- The hardest distinction is **Depression vs. Suicidal**: about 20% of each is confused with the other, which makes sense because their language overlaps. *Personality disorder*, the smallest class with 180 test samples, has the lowest recall.
+
+![Confusion matrix](results/confusion_matrix.png)
+
 ## How it works
 
-### Classifier (`train_model.py`)
+### 1. Baseline: TF-IDF + Random Forest (`train_model.py`, `benchmark_baseline.py`)
 - **Preprocessing:** lowercasing, removing non-letters, NLTK tokenization, stop-word removal and WordNet lemmatization.
-- **Class balancing:** undersamples every class to the size of the smallest one, so the model doesn't just favor the majority classes.
-- **Features:** TF-IDF vectors (top 5,000 terms).
-- **Model:** Random Forest (100 trees), with a stratified 70 / 15 / 15 train / validation / test split.
-- **Evaluation:** per-class precision, recall and F1 (scikit-learn `classification_report`) on the validation and test sets.
-- The trained vectorizer and model are saved together with `joblib`.
+- **Class balancing:** undersamples every class to the size of the smallest one (the "balanced" setting).
+- **Features and model:** TF-IDF (top 5,000 terms) with a Random Forest of 100 trees.
 
-### Risk-assessment app (`app.py`, `mental_health_detector.py`, `templates/index.html`)
-- A Hugging Face `transformers` sentiment-analysis pipeline scores the emotional tone of the message.
-- Keyword groups flag indicators of depression, anxiety, suicidal thoughts, self-harm and isolation.
-- A weighted score combines the two into a **low, medium or high** risk level with recommendations.
-- The app exposes a JSON endpoint (`POST /analyze`) and a Bootstrap web page.
+### 2. Fine-tuned transformers (`train_transformer.py`)
+- Hugging Face `transformers` with PyTorch: `distilbert-base-uncased` and `roberta-base` with a classification head.
+- Raw text with no manual preprocessing, a max length of 256 tokens, the AdamW optimizer (learning rate 2e-5) with warmup, and mixed-precision (fp16) training on an NVIDIA RTX 4090.
+- The checkpoint with the best validation macro-F1 is kept.
+- Training time on the full dataset: about 7 minutes for DistilBERT and about 13 minutes for RoBERTa.
 
-### Desktop GUI (`mental_health_gui.py`)
-A Tkinter app that loads the trained classifier and shows the predicted category for any message you type.
+### 3. Shared evaluation (`data_utils.py`, `summarize_results.py`)
+Every model uses exactly the same splits, so the comparison is fair. The results are saved as JSON and summarized into tables and charts.
+
+### 4. Apps
+- **Flask web app** (`app.py`, `mental_health_detector.py`, `templates/index.html`): combines a pretrained Hugging Face sentiment model with keyword detection to give a **low, medium or high risk level** and recommendations.
+- **Desktop app** (`mental_health_gui.py`): a Tkinter interface for the trained TF-IDF classifier.
 
 ## Dataset
 
-This repo doesn't include the dataset, because it's too large for GitHub. The model was trained on the public Kaggle dataset **[Sentiment Analysis for Mental Health](https://www.kaggle.com/datasets/suchintikasarkar/sentiment-analysis-for-mental-health)** (columns: `statement`, `status`). Download it and save it as `your_new_dataset.csv` in the project folder.
+The dataset isn't included in this repo because it's too large. Download the Kaggle dataset **[Sentiment Analysis for Mental Health](https://www.kaggle.com/datasets/suchintikasarkar/sentiment-analysis-for-mental-health)** (53,043 statements, columns `statement` and `status`) and save it as `your_new_dataset.csv` in the project folder.
 
 ## Run it
 
 ```bash
+pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124   # GPU build of PyTorch
 pip install -r requirements.txt
-python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
 
-python train_model.py        # train and evaluate the classifier, which saves mental_health_model.joblib
-python mental_health_gui.py  # desktop app that uses the trained classifier
+python benchmark_baseline.py --setting full                          # TF-IDF + Random Forest
+python train_transformer.py --setting full                           # DistilBERT
+python train_transformer.py --setting full --model roberta-base      # RoBERTa
+python summarize_results.py                                          # tables and charts in results/
+
 python app.py                # web app at http://localhost:5000
+python mental_health_gui.py  # desktop app (run train_model.py first)
 ```
 
 ## Tech
 
-Python · scikit-learn · NLTK · Hugging Face Transformers · Pandas · NumPy · Flask · Tkinter
+Python · PyTorch · Hugging Face Transformers · scikit-learn · NLTK · Pandas · Matplotlib · Flask · Tkinter
